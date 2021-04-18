@@ -27,7 +27,7 @@ const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology:
 client.connect(err => {
   const servicesCollection = client.db('travelia_services').collection("services");
   const testimonialsCollection = client.db('travelia_services').collection("testimonial");
-  const adminCollection = client.db('travelia_services').collection("admins");
+  const adminsCollection = client.db('travelia_services').collection("admins");
   const bookingsCollection = client.db('travelia_services').collection("bookings");
   console.log("database connected");
 
@@ -78,16 +78,7 @@ client.connect(err => {
       res.send(result.deletedCount > 0)
     })
   })
-  app.post('/adminMaker', (req, res) => {
-    const newAdmin = req.body;
-    console.log(req.body, "come from client site")
-    adminsCollection.insertOne(newAdmin)
-      .then(result => {
-        console.log('inserted count', result.insertedCount);
-        res.send(result.insertedCount > 0)
-      })
-  })
-  
+ 
   app.get('/service/:id', (req, res) => {
     servicesCollection.find({ _id: ObjectID(req.params.id) })
       .toArray((err, products) => {
@@ -123,10 +114,31 @@ client.connect(err => {
           }
         })
         .catch((error) => {
-          
+
         });
     }
   });
+
+//Admin Maker start
+  app.get('/userIsAdmin', (req, res) => {
+            adminsCollection.find({ email: req.query.email })
+              .toArray((err, documents) => {
+                res.send(documents);
+              })
+  });
+  app.post('/adminMaker', (req, res) => {
+    const newAdmin = req.body;
+    console.log(req.body, "come from client site")
+    adminsCollection.insertOne(newAdmin)
+      .then(result => {
+        console.log('inserted count', result.insertedCount);
+        res.send(result.insertedCount > 0)
+      })
+  })
+  //AdminMaker end
+  
+
+
   app.patch('/update/:id',(req,res)=>{
     bookingsCollection.updateOne({_id: ObjectID(req.params.id)},
      {
@@ -137,97 +149,6 @@ client.connect(err => {
         console.log(result);
      })
   })
-  
-//   app.post('/addOrder', (req, res) => {
-//     const order = req.body;
-//     orderCollection.insertOne(order)
-//       .then(result => {
-//         res.send(result.insertedCount > 0)
-//       })
-//   })
-//   app.delete('/deleteProduct/:id',(req,res)=>{
-//     productCollection.deleteOne({_id: ObjectID(req.params.id) })
-//     .then(result => {
-//       console.log(result)
-//       res.send(result.deletedCount > 0)
-//     })
-//   })
-//   app.get('/orders', (req, res) => {
-//     const bearer = req.headers.authorization;
-//     if (bearer && bearer.startsWith('Bearer')) {
-//       const idToken = bearer.split(' ')[1];//extracting second part
-//       admin.auth().verifyIdToken(idToken)
-//         .then((decodedToken) => {
-//           let tokenEmail = decodedToken.email;
-//           let queryEmail = req.query.email;
-//           if (tokenEmail == queryEmail) {
-//             orderCollection.find({ email: req.query.email })
-//               .toArray((err, documents) => {
-//                 res.send(documents);
-//               })
-//           }
-//           else {
-//             res.send("unauthorized access");
-//           }
-//         })
-//         .catch((error) => {
-//         });
-//     }
-//////////////////////////////////////////////////////Inserting Home page Data///////////////////////////////////////////////////////
-// app.get('/productdata/PopularDrinks', (req, res) => {
-//   PopularDrinksCollection.find({})
-//     .toArray((err, products) => {
-//       res.send(products)
-//     })
-// })
-
-
-// //delete start
-
-// app.delete('/deleteProduct/PopularDrinks/:id',(req,res)=>{
-//   PopularDrinksCollection.deleteOne({_id: ObjectID(req.params.id) })
-//   .then(result => {
-//     console.log(result)
-//     res.send(result.deletedCount > 0)
-//   })
-// })
-
-
-//   app.post('/adddata/PopularDrink', (req, res) => {
-//     const newProduct = req.body;
-//     console.log(newProduct);
-//     console.log(req.body, "come from client site")
-//     PopularDrinksCollection.insertOne(newProduct)
-//       .then(result => {
-//         console.log('inserted count', result.insertedCount);
-//         res.send(result.insertedCount > 0)
-//       })
-//   })
-  
-
-
-//   app.get('/product/PopularDrinks/:id', (req, res) => {
-//     PopularDrinksCollection.find({ _id:ObjectID(req.params.id) })
-//       .toArray((err, products) => {
-//         res.send(products[0])
-//       })
-//   })
-   
-
-
-//   // 
-
-// app.patch('/update/PopularDrinks/:id',(req,res)=>{
-//   PopularDrinksCollection.updateOne({_id: ObjectID(req.params.id)},
-//    {
-//     $set:{name:req.body.name,imageURL:req.body.imageURL}
-//    })
-//    .then (result=>{
-//       res.send(result.modifiedCount>0)
-//       console.log(result);
-//    })
-// })
-
 
 
 });
