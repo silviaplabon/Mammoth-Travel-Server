@@ -123,7 +123,7 @@ client.connect(err => {
   app.get('/userIsAdmin', (req, res) => {
             adminsCollection.find({ email: req.query.email })
               .toArray((err, documents) => {
-                res.send(documents);
+                res.send(documents.length>0);
               })
   });
   app.post('/adminMaker', (req, res) => {
