@@ -1,9 +1,9 @@
 #Fragrances Stack
 This Website developed by React,React-Router,React-hooks,HTML,CSS,Bootstrap
 
-Github Repository Client Site: [Mammoth Travel](https://github.com/Porgramming-Hero-web-course/complete-website-client-silviaplabon ).
+Github Repository Client Site: [Mammoth Travel]( https://github.com/silviaplabon/Mammoth-Travel-Client).
 
-Github Repository Server Site: [Mammoth Travel](https://github.com/Porgramming-Hero-web-course/complete-website-server-silviaplabon ).
+Github Repository Server Site: [Mammoth Travel](https://github.com/silviaplabon/Mammoth-Travel-Server ).
 
 Live link Client: [Mammoth Travel](https://mammoth-travel.web.app).
 
